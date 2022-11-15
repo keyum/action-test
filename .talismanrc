@@ -1,0 +1,8 @@
+fileignoreconfig:
+- filename: .github/workflows/dev_deploy.yml
+  checksum: ee7719dba233254c51e76c88f255bf0cd83792d45190559860d060fe62d06b86
+- filename: example.py
+  checksum: 95065ec51bd34272adb084b72515eb6bd310a789da874222dd93b0c1224a777f
+- filename: conftest.py
+  checksum: be1dba0ca4a0323c0b6fdd61636cf5587218c69dcc374af981afb7f7e1fa03af
+version: ""

@@ -1,0 +1,57 @@
+name: Deploy to Dev
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deploy to dev"
+        default: dev
+        type: environment
+        required: true
+      ref:
+        description: "Branch or Commit"
+        default: master
+        required: true
+      lambdaDeploy:
+        description: "Include Lambda in deployment?"
+        default: false
+        required: false
+        type: boolean
+
+jobs:
+  setup-environment:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+    outputs:
+      git-hash: ${{ steps.set-hash.outputs.commit-hash }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
+
+      # - name: Set Hash
+      #   id: set-hash
+      #   run: |
+      #     echo "commit-hash=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Env Values
+        run: |
+          echo "The environment is ${{ inputs.environment }}"
+          echo "The branch/tag is ${{ inputs.ref }}"
+          echo "The commit hash is ${{ steps.set-hash.outputs.commit-hash }}"
+
+  # run-build:
+  #   needs: [setup-environment]
+  #   uses: ./.github/workflows/build.yml
+  #   with:
+  #     environment: "${{ inputs.environment }}"
+  #     ref: "${{ needs.setup-environment.outputs.git-hash }}"
+  #   secrets: inherit
+
+  # run-user-flows:
+  #   # needs: [run-deployment]
+  #   if: ${{ inputs.environment }} == "dev" || ${{ inputs.environment }} == "perf"
+  #   uses: ./.github/workflows/user_flows.yml
+  #   with:
+  #     environment: "${{ inputs.environment }}"
+    # secrets: inherit
